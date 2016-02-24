@@ -16,6 +16,10 @@ var server = function () {
     app.use("/static", express.static(applicationRoot + 'static'));
     app.use(favicon(applicationRoot + 'static' + '/favicon.ico'));
 
+    app.get('/', function (req, res){
+        res.render('index.hbs');
+    })
+
     return {
         start: function (options, callback) {
             httpServer = new AppServer(app, options);
