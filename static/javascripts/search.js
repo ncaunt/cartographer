@@ -1,10 +1,15 @@
 window.onload = function(){
     function createSearch() {
+        var results = $('#results');
+        var searchBox = $('#search-box');
+        function doSearch() {
+            var text = searchBox[0].value;
+            results.html('You searched for ' + text);
+        }
+
         function bindSearchEvents(){
-            $('#search-box').blur(function (e) {
-                var text = e.target.value;
-                $('#results').html('You searched for ' + text);
-            });
+            $(searchBox[0]).blur(doSearch);
+            $('#search-button').click(doSearch);
         }
         bindSearchEvents();
         return {
