@@ -12,9 +12,6 @@ window.onload = function(){
             $('#search-button').click(doSearch);
         }
         bindSearchEvents();
-        return {
-
-        }
     }
 
     createSearch();
