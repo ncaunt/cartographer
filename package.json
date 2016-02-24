@@ -1,0 +1,34 @@
+{
+  "name": "cartographer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LateRoomsGroup/cartographer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LateRoomsGroup/cartographer/issues"
+  },
+  "homepage": "https://github.com/LateRoomsGroup/cartographer#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "hbs": "^4.0.0",
+    "http": "0.0.0",
+    "lodash": "^4.5.1",
+    "logall": "0.0.1",
+    "serve-favicon": "^2.3.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-eslint": "^17.3.1",
+    "grunt-jscs": "^2.7.0",
+    "grunt-mocha-cli": "~1.7.0",
+    "load-grunt-tasks": "^3.4.0"
+  }
+}
