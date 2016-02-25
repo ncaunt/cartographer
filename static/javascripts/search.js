@@ -3,16 +3,25 @@ window.onload = function(){
     var searchBox = $('#search-box');
 
     function parse(results){
-        resultsBox.html('');
+        resultsBox.html(
+            '<ul id="header">' +
+                '<li class="name">Server Name</li>' +
+                '<li class="ip">Ip Address</li>' +
+                '<li class="function">Function</li>' +
+                '<li class="type">Type</li>' +
+            '</ul>');
         console.log(results.hits.hits.length);
         results.hits.hits.forEach(createResultEntry);
     }
 
     function createResultEntry(result) {
         var source = result._source;
-        var entry = $('<div class="result">'+
-            '<span>' + source.hostName + '</span>' +
-            '</div>');
+        var entry = $('<ul class="result">'+
+                '<li class="name">' + source.hostName + '</li>' +
+                '<li class="ip">' + source.primaryIPAddress + '</li>' +
+                '<li class="function">' + source.primaryFunction + '</li>' +
+                '<li class="type">' + source.physicalOrVirtual + '</li>' +
+            '</ul>');
 
         resultsBox.append(entry)
     }

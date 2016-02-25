@@ -6,4 +6,11 @@ body { font-family: Helvetica, arial, freesans, clean, sans-serif; margin: 0; pa
 #search #search-box {height:40px; width: 40%; padding: 0 10px; font-size:18px;}
 #search button {height:40px; width: 10%; font-size:18px;}
 
-#results {width:100%; border-top:1px solid black;}
+#results {width:100%; }
+
+    #results #header {margin:0;padding: 10px 0 5px 0; border-bottom:3px solid black;font-size:24px;list-style: none;}
+    #results #header li {display:inline-block; width:24%;text-align: center;}
+
+    #results .result {margin:0; padding:0; border-bottom:1px solid lightgray;list-style: none;}
+    #results .result:hover {background-color:#F8F8FF;cursor: pointer;}
+    #results .result li {display:inline-block; width:24%;padding: 10px 0 25px 0; text-align: center;}
