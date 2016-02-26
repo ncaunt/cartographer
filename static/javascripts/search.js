@@ -64,25 +64,24 @@ window.onload = function(){
         }
         var roles = '';
         software.websites.forEach(function (website){
-            roles += 
-                '<ul class="role">' +
-                    '<li class="name">Website ' + website.name + '</li>' +
-                    '<li class="state">State ' + website.state + '</li>' +
-                    '<li class="path">Path ' + website.physicalPath + '</li>' +
-                    '<li class="bindings">Bindings:';
-                    if(website.bindings){
-                        roles += '<ul>';
-                         if(website.bindings.isArray && website.bindings.length > 0){
-                            _.forEach(website.bindings, function (binding){
-                                roles += '<li class="binding">' + binding + '</li>';
-                            });
-                        } else if(website.bindings) {
-                            roles += '<li class="binding">' + website.bindings + '</li>';
-                        }
-                        roles += '</ul></li>'
-                    }
-                roles += '</ul>'
-                    
+            roles += '<div class="role">' +
+                        '<ul>' +
+                            '<li class="name"><strong>Website:</strong> ' + website.name + '</li>' +
+                            '<li class="state"><strong>State:</strong> ' + website.state + '</li>' +
+                            '<li class="path"><strong>Path:</strong> ' + website.physicalPath + '</li>' +
+                        '</ul>';
+            if(website.bindings){
+                roles +='<div class="bindings"><strong>Bindings:</strong><ul>'
+                 if(Array.isArray(website.bindings) && website.bindings.length > 0){
+                    _.forEach(website.bindings, function (binding){
+                        roles += '<li class="binding">' + binding + '</li>';
+                    });
+                } else if(website.bindings) {
+                    roles += '<li class="binding">' + website.bindings + '</li>';
+                }
+                roles += '</ul></div><div class="cl"></div>'
+            }
+            roles += '</div>';        
         });
         return roles;
     }
