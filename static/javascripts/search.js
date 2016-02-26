@@ -38,19 +38,19 @@ window.onload = function(){
 
     function createResultEntry(result) {
         var source = result._source;
-        var type = source.physicalOrVirtual.toLowerCase().startsWith("virtual") ? 
+        source.type = source.physicalOrVirtual.toLowerCase().startsWith("virtual") ? 
             '<img src="/static/images/vm.png" height="100%" width="24px" class="virtual"/>' :
             '<i class="fa fa-server physical"></i>'
-        var entry = $(
+        var entry = $(Mustache.render(
             '<ul class="result">'+
-                '<li class="name">' + source.hostName + '</li>' +
-                '<li class="ip">' + source.primaryIPAddress + '</li>' +
-                '<li class="function">' + source.primaryFunction + '</li>' +
-                '<li class="type">' + type + '</li>' +
+                '<li class="name">{{hostName}}</li>' +
+                '<li class="ip">{{primaryIPAddress}}</li>' +
+                '<li class="function">{{primaryFunction}}</li>' +
+                '<li class="type">{{{type}}}</li>' +
                 '<ul class="hidden roles">' +
-                    createRoles(source.software) +
+                    createWebsites(source.software) +
                 '</ul>' +
-            '</ul>');
+            '</ul>', source));
         resultsBox.append(entry);
     }
 
@@ -58,26 +58,26 @@ window.onload = function(){
         $('.roles', $(e.target).closest('.result')).toggleClass('hidden');
     }
 
-    function createRoles(software) {
+    function createWebsites(software) {
         if(!software || !software.websites || software.websites.length === 0) {
             return '<div class="role">No websites found for this server</div>';
         }
         var roles = '';
         software.websites.forEach(function (website){
-            roles += '<div class="role">' +
+            roles += Mustache.render('<div class="role">' +
                         '<ul>' +
-                            '<li class="name"><strong>Website:</strong> ' + website.name + '</li>' +
-                            '<li class="state"><strong>State:</strong> ' + website.state + '</li>' +
-                            '<li class="path"><strong>Path:</strong> ' + website.physicalPath + '</li>' +
-                        '</ul>';
+                            '<li class="name"><strong>Website:</strong> {{name}}</li>' +
+                            '<li class="state"><strong>State:</strong> {{state}}</li>' +
+                            '<li class="path"><strong>Path:</strong> {{physicalPath}}</li>' +
+                        '</ul>', website);
             if(website.bindings){
-                roles +='<div class="bindings"><strong>Bindings:</strong><ul>'
+                roles += '<div class="bindings"><strong>Bindings:</strong><ul>'
                  if(Array.isArray(website.bindings) && website.bindings.length > 0){
                     _.forEach(website.bindings, function (binding){
-                        roles += '<li class="binding">' + binding + '</li>';
+                        roles += Mustache.render('<li class="binding">{{binding}}</li>', {binding: binding});
                     });
                 } else if(website.bindings) {
-                    roles += '<li class="binding">' + website.bindings + '</li>';
+                    roles += Mustache.render('<li class="binding">{{bindings}}</li>', website);
                 }
                 roles += '</ul></div><div class="cl"></div>'
             }
