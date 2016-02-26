@@ -3,4 +3,4 @@ charon:
   ports:
     - "1234:1234"
   environment:
-    - VIRTUAL_HOST: cartographer.laterooms.com
+    VIRTUAL_HOST: "cartographer.laterooms.com"
