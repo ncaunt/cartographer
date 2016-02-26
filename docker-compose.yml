@@ -1,0 +1,6 @@
+charon: 
+  image: docker-registry.laterooms.com:5000/tlrg/cartographer
+  ports:
+    - "1234:1234"
+  environment:
+    - VIRTUAL_HOST: cartographer.laterooms.com
