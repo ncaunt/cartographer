@@ -2,6 +2,8 @@ body { margin: 0 !important; }
 
 body { font-family: Helvetica, arial, freesans, clean, sans-serif; margin: 0; padding: 20px; }
 
+ul {padding: 0;}
+
 #search {padding-bottom: 20px;}
 #search #search-box {height:40px; width: 40%; padding: 0 10px; font-size:18px;}
 #search button {height:40px; width: 10%; font-size:18px;}
@@ -12,5 +14,11 @@ body { font-family: Helvetica, arial, freesans, clean, sans-serif; margin: 0; pa
     #results #header li {display:inline-block; width:24%;text-align: center;}
 
     #results .result {margin:0; padding:0; border-bottom:1px solid lightgray;list-style: none;}
-    #results .result:hover {background-color:#F8F8FF;cursor: pointer;}
-    #results .result li {display:inline-block; width:24%;padding: 10px 0 25px 0; text-align: center;}
+    #results .result:hover {background-color:#FEFEFF;cursor: pointer;}
+    #results .result li {display:inline-block; width:24%;padding: 5px 0; line-height:48px;text-align: center;}
+    #results .virtual {vertical-align: middle;}
+    #results .physical {font-size:24px;}
+
+    #results .result .roles .role {border-bottom: 1px solid lightgray;}
+
+.hidden {display: none;}
