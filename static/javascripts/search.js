@@ -59,8 +59,8 @@ window.onload = function(){
     }
 
     function createRoles(software) {
-        if(!software || !software.websites) {
-            return $('<ul class="hidden roles"><li class="nothing">No roles found for this server</li></ul>');
+        if(!software || !software.websites || software.websites.length === 0) {
+            return '<div class="role">No websites found for this server</div>';
         }
         var roles = '';
         software.websites.forEach(function (website){
@@ -98,7 +98,7 @@ window.onload = function(){
     function runSearch(text) {
         resultsBox.html('Searching now');
         $.ajax({
-            url:"http://logs.laterooms.com:9200/servers/_search?size=100&q=hostName:" + text + "*"
+            url:"http://logs.laterooms.com:9200/servers/_search?size=100&q=" + text + "*"
         })
         .success(parse)
         .error(function (err) {
