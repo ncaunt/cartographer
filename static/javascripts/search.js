@@ -30,45 +30,18 @@ window.onload = function(){
         return runSearch(query);
     }
 
-    function parse(results){
+    function generateResultList(results){
         resultsBox.html('');
         if(!results || !results.hits || !results.hits.hits || !results.hits.hits.length){
             return resultsBox.html('<li class="result"><span id="no-results">No results found <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i></span></li>');
         }
 
-        var parsed = _.map(results.hits.hits, function (hit) {
-            var source = hit._source;
-            var websiteCount = '0 websites ';
-            if(source.software && source.software.websites) {
-                websiteCount = Array.isArray(source.software.websites) ? source.software.websites.length + ' websites ' : '1 website '; 
-            }
-            var type = source.physicalOrVirtual.toLowerCase().startsWith("virtual") ? 
-                '<img src="/static/images/vm.png" height="100%" width="24px" class="virtual"/>' :
-                '<i class="fa fa-server physical"></i>';
-
-            var memory = source.physicalOrAllocatedMemory + (source.physicalOrAllocatedMemory > 300 ? 'MB' : 'GB');
-            var processors = source.numberOfProcessors || 'Unknown';
-
-            var websites = mapWebsites(source.software)
-
-            return {
-                hostName: source.hostName,
-                ipAddress: source.primaryIPAddress,
-                websiteCount: websiteCount,
-                platform: source.platform,
-                type: type,
-                physicalOrAllocatedMemory: memory,
-                numberOfProcessors: processors,
-                model: source.model,
-                serialNumber: source.serialNumber,
-                websites: mapWebsites(source.software)
-            }
-        });
+        var parsed = _.map(results.hits.hits, mapResults);
 
         parsed.forEach(createResultEntry);
     }
 
-    function createResultEntry(result) {
+    function createResultEntry(software) {
 
         var entry = $(Mustache.render(
             '<li class="result">'+
@@ -86,10 +59,66 @@ window.onload = function(){
                         '<li><strong>Model:</strong>{{model}}</li>' +
                         '<li><strong>Service Tag:</strong>{{serialNumber}}</li>' +
                     '</ul>' +
-                    createWebsites(result.websites) +
+                    createWebsites(software.websites) +
                 '</div>' +
-            '</li>', result));
+            '</li>', software));
         resultsBox.append(entry);
+    }
+
+    function createWebsites(websites) {
+        if(!websites || websites.length === 0) {
+            return '<strong>No websites found for this server</strong>';
+        }
+        var websitesHtml = '<strong>Websites:</strong>';
+        websites.forEach(function (website){
+            websitesHtml += Mustache.render('<div class="website">' +
+                        '<ul>' +
+                            '<li class="name"><strong>Name:</strong> {{name}}</li>' +
+                            '<li class="state"><strong>State:</strong> {{state}}</li>' +
+                            '<li class="path"><strong>Path:</strong> {{physicalPath}}</li>' +
+                        '</ul>' +
+                        createBindings(website), website);
+            websitesHtml += '</div>';        
+        });
+        return websitesHtml;
+    }
+
+    function createBindings(website) {
+            var html = '<div class="bindings"><strong>Bindings:</strong><ul>';
+            _.forEach(website.bindings, function (binding){
+                html += Mustache.render('<li class="binding">{{binding}}</li>', {binding: binding});
+            });
+            html += '</ul></div><div class="cl"></div>';
+            return html;
+    }
+
+    function mapResults(hit) {
+        var source = hit._source;
+        var websiteCount = '0 websites ';
+        if(source.software && source.software.websites) {
+            websiteCount = Array.isArray(source.software.websites) ? source.software.websites.length + ' websites ' : '1 website '; 
+        }
+        var type = source.physicalOrVirtual.toLowerCase().startsWith("virtual") ? 
+            '<img src="/static/images/vm.png" height="100%" width="24px" class="virtual"/>' :
+            '<i class="fa fa-server physical"></i>';
+
+        var memory = source.physicalOrAllocatedMemory + (source.physicalOrAllocatedMemory > 300 ? 'MB' : 'GB');
+        var processors = source.numberOfProcessors || 'Unknown';
+
+        var websites = mapWebsites(source.software)
+
+        return {
+            hostName: source.hostName,
+            ipAddress: source.primaryIPAddress,
+            websiteCount: websiteCount,
+            platform: source.platform,
+            type: type,
+            physicalOrAllocatedMemory: memory,
+            numberOfProcessors: processors,
+            model: source.model,
+            serialNumber: source.serialNumber,
+            websites: mapWebsites(source.software)
+        }
     }
 
     function mapWebsites(software) {
@@ -112,7 +141,7 @@ window.onload = function(){
 
     function mapBindings(bindings) {
         if(!bindings){
-            return [];
+            return ['No bindings found'];
         }
         if(Array.isArray(bindings)){
             return bindings;
@@ -121,36 +150,12 @@ window.onload = function(){
         }
     }
 
-    function createWebsites(websites) {
-        if(!websites || websites.length === 0) {
-            return '<strong>No websites found for this server</strong>';
-        }
-        var websitesHtml = '<strong>Websites:</strong>';
-        websites.forEach(function (website){
-            websitesHtml += Mustache.render('<div class="website">' +
-                        '<ul>' +
-                            '<li class="name"><strong>Name:</strong> {{name}}</li>' +
-                            '<li class="state"><strong>State:</strong> {{state}}</li>' +
-                            '<li class="path"><strong>Path:</strong> {{physicalPath}}</li>' +
-                        '</ul>', website);
-            if(website.bindings){
-                websitesHtml += '<div class="bindings"><strong>Bindings:</strong><ul>'
-                _.forEach(website.bindings, function (binding){
-                    websitesHtml += Mustache.render('<li class="binding">{{binding}}</li>', {binding: binding});
-                });
-                websitesHtml += '</ul></div><div class="cl"></div>'
-            }
-            websitesHtml += '</div>';        
-        });
-        return websitesHtml;
-    }
-
     function runSearch(text) {
         resultsBox.html('<span id="searching">Searching now</span>');
         $.ajax({
             url:"http://logs.laterooms.com:9200/servers/_search?size=100&q=" + text + "*"
         })
-        .success(parse)
+        .success(generateResultList)
         .error(function (err) {
             resultsBox.html('encountered an error: ' + err)
         });
