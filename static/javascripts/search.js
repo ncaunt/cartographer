@@ -15,6 +15,12 @@ window.onload = function(){
 
     function bindSearchEvents(){
         $('#search-button').click(searchFromBox);
+        $(searchBox).keypress(function(event){
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                $('#search-button').click()
+            }
+        });
     }
     bindSearchEvents();
 
@@ -27,7 +33,7 @@ window.onload = function(){
     function parse(results){
         resultsBox.html('');
         if(!results || !results.hits || !results.hits.hits || !results.hits.hits.length){
-            return resultsBox.html('<li><span id="no-results">No results found <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i></span></li>');
+            return resultsBox.html('<li class="result"><span id="no-results">No results found <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i></span></li>');
         }
 
         // results.hits.hits = _.sortBy(results.hits.hits, '_source.hostName');
