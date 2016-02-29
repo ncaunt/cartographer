@@ -27,7 +27,7 @@ window.onload = function(){
     function parse(results){
         resultsBox.html('');
         if(!results || !results.hits || !results.hits.hits || !results.hits.hits.length){
-            return resultsBox.html('<span id="no-results">No results found <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i></span>');
+            return resultsBox.html('<li><span id="no-results">No results found <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i></span></li>');
         }
 
         // results.hits.hits = _.sortBy(results.hits.hits, '_source.hostName');
@@ -46,26 +46,24 @@ window.onload = function(){
         }
 
         var entry = $(Mustache.render(
-            '<ul class="result">'+
-                '<li class="name">'+
-                    '<span class="host-name">' +
-                        '<strong>{{hostName}}</strong>' +
-                    '</span> ' +
-                    '<span class="ip">({{primaryIPAddress}})</span> ' +
-                    '<span class="website-count">{{numberOfWebsites}}</span>' +
-                    '<div class="hidden details">' +
-                        '<ul>' +
-                            '<li><strong>Platform:</strong>{{platform}}</li>' +
-                            '<li><strong>Type:</strong>{{{type}}}</li>' +
-                            '<li><strong>Memory:</strong>{{physicalOrAllocatedMemory}}GB</li>' +
-                            '<li><strong>Total Cores:</strong>{{numberOfProcessors}}</li>' +
-                            '<li><strong>Model:</strong>{{model}}</li>' +
-                            '<li><strong>Service Tag:</strong>{{serialNumber}}</li>' +
-                        '</ul>' +
-                        createWebsites(source.software) +
-                    '</div>' +
-                '</li>' +
-            '</ul>', source));
+            '<li class="result">'+
+                '<span class="host-name">' +
+                    '<strong>{{hostName}}</strong>' +
+                '</span> ' +
+                '<span class="ip">({{primaryIPAddress}})</span> ' +
+                '<span class="website-count">{{numberOfWebsites}}</span>' +
+                '<div class="hidden details">' +
+                    '<ul>' +
+                        '<li><strong>Platform:</strong>{{platform}}</li>' +
+                        '<li><strong>Type:</strong>{{{type}}}</li>' +
+                        '<li><strong>Memory:</strong>{{physicalOrAllocatedMemory}}GB</li>' +
+                        '<li><strong>Total Cores:</strong>{{numberOfProcessors}}</li>' +
+                        '<li><strong>Model:</strong>{{model}}</li>' +
+                        '<li><strong>Service Tag:</strong>{{serialNumber}}</li>' +
+                    '</ul>' +
+                    createWebsites(source.software) +
+                '</div>' +
+            '</li>', source));
         resultsBox.append(entry);
     }
 
