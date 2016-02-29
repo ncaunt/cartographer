@@ -24,15 +24,9 @@ window.onload = function(){
     }
 
     function parse(results){
-        resultsBox.html(
-            '<ul id="header">' +
-                '<li class="name">Server Name</li>' +
-                '<li class="ip">Ip Address</li>' +
-                '<li class="function">Function</li>' +
-                '<li class="type">Type</li>' +
-            '</ul>');
+        resultsBox.html('');
 
-        results.hits.hits = _.sortBy(results.hits.hits, '_source.hostName');
+        // results.hits.hits = _.sortBy(results.hits.hits, '_source.hostName');
         results.hits.hits.forEach(createResultEntry);
     }
 
@@ -43,47 +37,52 @@ window.onload = function(){
             '<i class="fa fa-server physical"></i>'
         var entry = $(Mustache.render(
             '<ul class="result">'+
-                '<li class="name">{{hostName}}</li>' +
-                '<li class="ip">{{primaryIPAddress}}</li>' +
-                '<li class="function">{{primaryFunction}}</li>' +
-                '<li class="type">{{{type}}}</li>' +
-                '<ul class="hidden roles">' +
+                '<li class="name"><strong>{{hostName}}</strong> ({{primaryIPAddress}}) - {{primaryFunction}}</li>' +
+                '<div class="hidden details">' +
+                    '<ul>' +
+                        '<li><strong>Platform:</strong>{{platform}}</li>' +
+                        '<li><strong>Type:</strong>{{{type}}}</li>' +
+                        '<li><strong>Memory:</strong>{{physicalOrAllocatedMemory}}GB</li>' +
+                        '<li><strong>Total Cores:</strong>{{numberOfProcessors}}</li>' +
+                        '<li><strong>Model:</strong>{{model}}</li>' +
+                        '<li><strong>Service Tag:</strong>{{serialNumber}}</li>' +
+                    '</ul>' +
                     createWebsites(source.software) +
-                '</ul>' +
+                '</div>' +
             '</ul>', source));
         resultsBox.append(entry);
     }
 
     function showAdditionalInfo(e){
-        $('.roles', $(e.target).closest('.result')).toggleClass('hidden');
+        $('.details', $(e.target).closest('.result')).toggleClass('hidden');
     }
 
     function createWebsites(software) {
         if(!software || !software.websites || software.websites.length === 0) {
-            return '<div class="role">No websites found for this server</div>';
+            return '<strong>No websites found for this server</strong>';
         }
-        var roles = '';
+        var websites = '<strong>Websites:</strong>';
         software.websites.forEach(function (website){
-            roles += Mustache.render('<div class="role">' +
+            websites += Mustache.render('<div class="website">' +
                         '<ul>' +
-                            '<li class="name"><strong>Website:</strong> {{name}}</li>' +
+                            '<li class="name"><strong>Name:</strong> {{name}}</li>' +
                             '<li class="state"><strong>State:</strong> {{state}}</li>' +
                             '<li class="path"><strong>Path:</strong> {{physicalPath}}</li>' +
                         '</ul>', website);
             if(website.bindings){
-                roles += '<div class="bindings"><strong>Bindings:</strong><ul>'
+                websites += '<div class="bindings"><strong>Bindings:</strong><ul>'
                  if(Array.isArray(website.bindings) && website.bindings.length > 0){
                     _.forEach(website.bindings, function (binding){
-                        roles += Mustache.render('<li class="binding">{{binding}}</li>', {binding: binding});
+                        websites += Mustache.render('<li class="binding">{{binding}}</li>', {binding: binding});
                     });
                 } else if(website.bindings) {
-                    roles += Mustache.render('<li class="binding">{{bindings}}</li>', website);
+                    websites += Mustache.render('<li class="binding">{{bindings}}</li>', website);
                 }
-                roles += '</ul></div><div class="cl"></div>'
+                websites += '</ul></div><div class="cl"></div>'
             }
-            roles += '</div>';        
+            websites += '</div>';        
         });
-        return roles;
+        return websites;
     }
 
     function searchFromBox() {

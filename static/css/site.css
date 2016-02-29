@@ -14,20 +14,23 @@ ul {padding: 0;}
     #results #header li {display:inline-block; width:24%;text-align: center;}
     #results #header li.name {text-align: left;}
 
-    #results .result {margin:0; padding:0; border-bottom:1px solid lightgray;list-style: none;}
+    #results .result {margin:0; padding-left:15px; border-bottom:1px solid lightgray;list-style: none;}
     #results .result:hover {background-color:#FEFEFF;cursor: pointer;}
-    #results .result li {display:inline-block; width:24%;padding: 5px 0; line-height:48px;text-align: center;}
+    #results .result li {display:inline-block;padding: 5px 0; line-height:48px;text-align: center;}
     #results .result li.name {text-align: left;}
     #results .virtual {vertical-align: middle;}
     #results .physical {font-size:24px;}
 
-    #results .result .roles .role {vertical-align:top;padding:10px;border-top: 1px solid lightgray;}
-    #results .result .roles .role ul {display: inline-block;width: 50%;}
-    #results .result .roles .role li {display:inherit;float:left;width:100%;line-height:24px;text-align:left;}
-    #results .result .roles .role li strong {float:left; width:100px;}
-    #results .result .roles .bindings {display:inline-block; vertical-align:top;width: 40%;margin-top:10px; padding-left: 150px;}
-    #results .result .roles .bindings ul {display:inline-block; width:100%;padding-left:50px;}
-    #results .result .roles .bindings li {display:inherit;width:100%;text-align:left;line-height:24px;}
+    #results .result .details ul {padding-bottom: 20px;}
+    #results .result .details ul li {display:inline-block; width:45%;line-height:24px; padding:0 0 0 15px;text-align:left;}
+    #results .result .details ul li strong {display:inline-block; width:100px;}
+    #results .result .details .website {vertical-align:top;padding:10px;border-top: 1px solid lightgray;}
+    #results .result .details .website ul {display: inline-block;width: 50%;}
+    #results .result .details .website li {display:inherit;float:left;width:100%;line-height:24px;text-align:left;}
+    #results .result .details .website li strong {float:left; width:100px;}
+    #results .result .details .bindings {display:inline-block; vertical-align:top;width: 40%;margin-top:10px;}
+    #results .result .details .bindings ul {display:inline-block; width:100%;padding-left:50px;}
+    #results .result .details .bindings li {display:inherit;width:100%;padding-left:0;text-align:left;line-height:24px;}
 
 .hidden {display: none;}
 .cl {clear:both;}
