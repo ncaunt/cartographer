@@ -47,18 +47,24 @@ window.onload = function(){
 
         var entry = $(Mustache.render(
             '<ul class="result">'+
-                '<li class="name"><span class="host-name"><strong>{{hostName}}</strong></span> <span class="ip">({{primaryIPAddress}})</span> <span class="website-count">{{numberOfWebsites}}</span></li>' +
-                '<div class="hidden details">' +
-                    '<ul>' +
-                        '<li><strong>Platform:</strong>{{platform}}</li>' +
-                        '<li><strong>Type:</strong>{{{type}}}</li>' +
-                        '<li><strong>Memory:</strong>{{physicalOrAllocatedMemory}}GB</li>' +
-                        '<li><strong>Total Cores:</strong>{{numberOfProcessors}}</li>' +
-                        '<li><strong>Model:</strong>{{model}}</li>' +
-                        '<li><strong>Service Tag:</strong>{{serialNumber}}</li>' +
-                    '</ul>' +
-                    createWebsites(source.software) +
-                '</div>' +
+                '<li class="name">'+
+                    '<span class="host-name">' +
+                        '<strong>{{hostName}}</strong>' +
+                    '</span> ' +
+                    '<span class="ip">({{primaryIPAddress}})</span> ' +
+                    '<span class="website-count">{{numberOfWebsites}}</span>' +
+                    '<div class="hidden details">' +
+                        '<ul>' +
+                            '<li><strong>Platform:</strong>{{platform}}</li>' +
+                            '<li><strong>Type:</strong>{{{type}}}</li>' +
+                            '<li><strong>Memory:</strong>{{physicalOrAllocatedMemory}}GB</li>' +
+                            '<li><strong>Total Cores:</strong>{{numberOfProcessors}}</li>' +
+                            '<li><strong>Model:</strong>{{model}}</li>' +
+                            '<li><strong>Service Tag:</strong>{{serialNumber}}</li>' +
+                        '</ul>' +
+                        createWebsites(source.software) +
+                    '</div>' +
+                '</li>' +
             '</ul>', source));
         resultsBox.append(entry);
     }
