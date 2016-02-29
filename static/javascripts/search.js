@@ -20,11 +20,15 @@ window.onload = function(){
 
     var query = getParameterByName('q');
     if(query){
+        $(searchBox).val(query);
         return runSearch(query);
     }
 
     function parse(results){
         resultsBox.html('');
+        if(!results || !results.hits || !results.hits.hits || !results.hits.hits.length){
+            return resultsBox.html('<span id="no-results">No results found <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i></span>');
+        }
 
         // results.hits.hits = _.sortBy(results.hits.hits, '_source.hostName');
         results.hits.hits.forEach(createResultEntry);
@@ -34,10 +38,16 @@ window.onload = function(){
         var source = result._source;
         source.type = source.physicalOrVirtual.toLowerCase().startsWith("virtual") ? 
             '<img src="/static/images/vm.png" height="100%" width="24px" class="virtual"/>' :
-            '<i class="fa fa-server physical"></i>'
+            '<i class="fa fa-server physical"></i>';
+        if(!source.software || !source.software.websites){
+            source.numberOfWebsites = '0 websites ';
+        } else {
+            source.numberOfWebsites = Array.isArray(source.software.websites) ? source.software.websites.length + ' websites ' : '1 website '; 
+        }
+
         var entry = $(Mustache.render(
             '<ul class="result">'+
-                '<li class="name"><strong>{{hostName}}</strong> ({{primaryIPAddress}}) - {{primaryFunction}}</li>' +
+                '<li class="name"><span class="host-name"><strong>{{hostName}}</strong></span> <span class="ip">({{primaryIPAddress}})</span> <span class="website-count">{{numberOfWebsites}}</span></li>' +
                 '<div class="hidden details">' +
                     '<ul>' +
                         '<li><strong>Platform:</strong>{{platform}}</li>' +
@@ -95,7 +105,7 @@ window.onload = function(){
     }
 
     function runSearch(text) {
-        resultsBox.html('Searching now');
+        resultsBox.html('<span id="searching">Searching now</span>');
         $.ajax({
             url:"http://logs.laterooms.com:9200/servers/_search?size=100&q=" + text + "*"
         })

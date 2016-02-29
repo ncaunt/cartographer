@@ -16,8 +16,9 @@ ul {padding: 0;}
 
     #results .result {margin:0; padding-left:15px; border-bottom:1px solid lightgray;list-style: none;}
     #results .result:hover {background-color:#FEFEFF;cursor: pointer;}
-    #results .result li {display:inline-block;padding: 5px 0; line-height:48px;text-align: center;}
-    #results .result li.name {text-align: left;}
+    #results .result li {display:inline-block;padding: 5px 0; line-height:48px;}
+    #results .result li span {display: inline-block;width:125px;}
+        #results .result li span.host-name {;width:175px;} 
     #results .virtual {vertical-align: middle;}
     #results .physical {font-size:24px;}
 
@@ -31,6 +32,9 @@ ul {padding: 0;}
     #results .result .details .bindings {display:inline-block; vertical-align:top;width: 40%;margin-top:10px;}
     #results .result .details .bindings ul {display:inline-block; width:100%;padding-left:50px;}
     #results .result .details .bindings li {display:inherit;width:100%;padding-left:0;text-align:left;line-height:24px;}
+
+    #no-results {line-height:48px;font-size:48px;}
+    #searching {line-height:48px;font-size:48px;}
 
 .hidden {display: none;}
 .cl {clear:both;}
