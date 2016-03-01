@@ -18,14 +18,27 @@ window.onload = function(){
     }
     bindSearchEvents();
 
-    function runQueryFromQuerystring(){
+    function showAdditionalInfo(e){
+        $('.details', $(e.target).closest('.result')).toggleClass('hidden');
+    }
+
+    function searchFromQuerystring(){
         var query = getParameterByName('q');
         if(query){
             $(searchBox).val(query);
             return runSearch(query);
         }    
     }
-    runQueryFromQuerystring();
+    searchFromQuerystring();
+
+    function searchFromBox() {
+        var text = searchBox[0].value;
+        if(text === "") {
+            resultsBox.html('');
+            return;
+        }
+        runSearch(text);
+    }
 
     function runSearch(text) {
         resultsBox.html('<span id="searching">Searching now</span>');
@@ -38,19 +51,6 @@ window.onload = function(){
 
     function renderResultList(results){
         resultsBox.html(renderer.render(results));
-    }
-
-    function showAdditionalInfo(e){
-        $('.details', $(e.target).closest('.result')).toggleClass('hidden');
-    }
-
-    function searchFromBox() {
-        var text = searchBox[0].value;
-        if(text === "") {
-            resultsBox.html('');
-            return;
-        }
-        runSearch(text);
     }
 
     function getParameterByName(name, url) {
