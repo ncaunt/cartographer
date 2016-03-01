@@ -1,7 +1,8 @@
 window.onload = function(){
 
     var resultsMapper = createMapper();
-    var renderer = createRenderer(resultsMapper);
+    var fileLoader = createFileLoader();
+    var renderer = createRenderer(resultsMapper, fileLoader);
     var esInterface = createElasticsearchInterface();
     var resultsBox = $('#results');
     var searchBox = $('#search-box');
@@ -53,7 +54,10 @@ window.onload = function(){
     }
 
     function renderResultList(results){
-        resultsBox.html(renderer.render(results));
+        renderer.render(results)
+            .then(function (renderedView) {
+                resultsBox.html(renderedView);
+            });
     }
 
     function getParameterByName(name, url) {

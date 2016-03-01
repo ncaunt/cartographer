@@ -60,6 +60,8 @@ function createMapper() {
     }
 
     return {
-        map: mapBaseResults
+        map: function (results) {
+            return {results: _.map(results, mapBaseResults)}
+        }
     }
 }
