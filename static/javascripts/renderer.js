@@ -17,36 +17,30 @@ function createRenderer(resultsMapper) {
                         '<li><strong>Model:</strong>{{model}}</li>' +
                         '<li><strong>Service Tag:</strong>{{serialNumber}}</li>' +
                     '</ul>' +
-                    renderWebsites(software.websites) +
+                    '<strong>Websites:</strong>' +
+                    '{{#websites}}' + 
+                        '<div class="website">' +
+                            '<ul>' +
+                                '<li class="name"><strong>Name:</strong> {{name}}</li>' +
+                                '<li class="state"><strong>State:</strong> {{state}}</li>' +
+                                '<li class="path"><strong>Path:</strong> {{physicalPath}}</li>' +
+                            '</ul>' +
+                            '<div class="bindings">' +
+                                '<strong>Bindings:</strong>' +
+                                '<ul>' + 
+                                    '{{#bindings}}' +
+                                        '<li class="binding">{{binding}}</li>'+
+                                    '{{/bindings}}' +
+                                '</ul>' +
+                            '</div>' + 
+                            '<div class="cl"></div>' +
+                        '</div>' +
+                    '{{/websites}}' +
+                    '{{^websites}}' +
+                        '<strong>No websites found for this server</strong>' +
+                    '{{/websites}}' +
                 '</div>' +
             '</li>', software);
-    }
-
-    function renderWebsites(websites) {
-        if(!websites || websites.length === 0) {
-            return '<strong>No websites found for this server</strong>';
-        }
-        var websitesHtml = '';
-        websites.forEach(function (website){
-            websitesHtml += Mustache.render('<strong>Websites:</strong>' +
-                '<div class="website">' +
-                    '<ul>' +
-                        '<li class="name"><strong>Name:</strong> {{name}}</li>' +
-                        '<li class="state"><strong>State:</strong> {{state}}</li>' +
-                        '<li class="path"><strong>Path:</strong> {{physicalPath}}</li>' +
-                    '</ul>' +
-                    '<div class="bindings">' +
-                        '<strong>Bindings:</strong>' +
-                        '<ul>' + 
-                            '{{#bindings}}' +
-                                '<li class="binding">{{binding}}</li>'+
-                            '{{/bindings}}' +
-                        '</ul>' +
-                    '</div>' + 
-                    '<div class="cl"></div>' +
-                '</div>', website); 
-        });
-        return websitesHtml;
     }
 
     return {
