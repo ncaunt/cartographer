@@ -4,7 +4,6 @@ window.onload = function(){
     var renderer = createRenderer(resultsMapper);
     var esInterface = createElasticsearchInterface();
     var resultsBox = $('#results');
-    resultsBox.on('click', '.result', showAdditionalInfo);
     var searchBox = $('#search-box');
 
     function bindSearchEvents(){
@@ -15,22 +14,18 @@ window.onload = function(){
                 $('#search-button').click()
             }
         });
+        resultsBox.on('click', '.result', showAdditionalInfo);
     }
     bindSearchEvents();
 
-    var query = getParameterByName('q');
-    if(query){
-        $(searchBox).val(query);
-        return runSearch(query);
+    function runQueryFromQuerystring(){
+        var query = getParameterByName('q');
+        if(query){
+            $(searchBox).val(query);
+            return runSearch(query);
+        }    
     }
-
-    function renderResultList(results){
-        resultsBox.html('');
-        if(!results || !results.hits || !results.hits.hits || !results.hits.hits.length){
-            return resultsBox.html('<li class="result"><span id="no-results">No results found <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i> <i class="fa fa-frown-o"></i></span></li>');
-        }
-        resultsBox.html(renderer.render(results));
-    }
+    runQueryFromQuerystring();
 
     function runSearch(text) {
         resultsBox.html('<span id="searching">Searching now</span>');
@@ -39,6 +34,10 @@ window.onload = function(){
             .catch(function (err) {
                 resultsBox.html('<span id="no-results">Encountered an error ' + err.message + '</span>');
             });
+    }
+
+    function renderResultList(results){
+        resultsBox.html(renderer.render(results));
     }
 
     function showAdditionalInfo(e){

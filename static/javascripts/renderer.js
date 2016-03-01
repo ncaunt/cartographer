@@ -51,6 +51,10 @@ function createRenderer(resultsMapper) {
 
     return {
         render: function (results) {
+            if(!results || !results.hits || !results.hits.hits || !results.hits.hits.length){
+                return '<span id="no-results">No results found <i class="fa fa-frown-o"></i></span>';
+            }
+
             var parsed = _.map(results.hits.hits, resultsMapper.map);
 
             return _.reduce(parsed, function (sum, result) {
