@@ -9,6 +9,8 @@ function createMapper() {
             '<img src="/static/images/vm.png" height="100%" width="24px" class="virtual"/>' :
             '<i class="fa fa-server physical"></i>';
 
+        var platformIcon = getIcon(source.platform.toLowerCase());
+
         var memory = source.physicalOrAllocatedMemory + (source.physicalOrAllocatedMemory > 300 ? 'MB' : 'GB');
         var processors = source.numberOfProcessors || 'Unknown';
 
@@ -19,6 +21,7 @@ function createMapper() {
             ipAddress: source.primaryIPAddress,
             websiteCount: websiteCount,
             platform: source.platform,
+            platformIcon: platformIcon,
             type: type,
             physicalOrAllocatedMemory: memory,
             numberOfProcessors: processors,
@@ -26,6 +29,14 @@ function createMapper() {
             serialNumber: source.serialNumber,
             websites: mapWebsites(source.software)
         }
+    }
+
+    function getIcon(platform) {
+        var windows = new RegExp(".*windows.*");
+        if(windows.test(platform)) {
+            return '<i class="fa fa-windows"></i>';
+        }
+        return '<i class="fa fa-linux"></i>';
     }
 
     function mapWebsites(software) {
