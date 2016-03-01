@@ -55,7 +55,7 @@ function createMapper() {
                 return {binding:binding};
             });
         } else {
-            return mapBindings([binding]);
+            return mapBindings([bindings]);
         }
     }
 
