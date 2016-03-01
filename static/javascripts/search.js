@@ -45,7 +45,10 @@ window.onload = function(){
         esInterface.query(text)
             .then(renderResultList)
             .catch(function (err) {
-                resultsBox.html('<span id="no-results">Encountered an error ' + err.message + '</span>');
+                resultsBox.html('<div id="error">' + 
+                    '<span class="message">Encountered an error ' + err.message + '</span>' +
+                    '<span class="stack">' + err.stack + '</span>' +
+                '</div>');
             });
     }
 

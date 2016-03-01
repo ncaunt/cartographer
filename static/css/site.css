@@ -34,6 +34,8 @@ ul {padding: 0;}
 
     #no-results {line-height:48px;font-size:48px;}
     #searching {line-height:48px;font-size:48px;}
+    #error .message {display:inline-block;width:100%;line-height:48px;font-size:48px;}
+    #error .stack {display:inline-block;width:40%;}
 
 .hidden {display: none;}
 .cl {clear:both;}

@@ -48,12 +48,14 @@ function createMapper() {
 
     function mapBindings(bindings) {
         if(!bindings){
-            return ['No bindings found'];
+            return mapBindings(['No bindings found']);
         }
         if(Array.isArray(bindings)){
-            return bindings;
+            return _.map(bindings, function (binding) {
+                return {binding:binding};
+            });
         } else {
-            return [bindings];
+            return mapBindings([binding]);
         }
     }
 
