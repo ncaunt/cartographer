@@ -33,10 +33,13 @@ function createMapper() {
 
     function getIcon(platform) {
         var windows = new RegExp(".*windows.*");
+        var linux = new RegExp(".*linux.*");
         if(windows.test(platform)) {
             return '<i class="fa fa-windows"></i>';
+        } else if (linux.test(platform)) {
+            return '<i class="fa fa-linux"></i>';
         }
-        return '<i class="fa fa-linux"></i>';
+        return '<i class="fa fa-question"></i>';
     }
 
     function mapWebsites(software) {
