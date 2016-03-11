@@ -17,14 +17,14 @@ ul {padding: 0;}
     #results .result {margin:0; padding:15px; border-bottom:1px solid lightgray;list-style: none;}
     #results .result:hover {background-color:#FEFEFF;cursor: pointer;}
     #results .result span {display: inline-block;width:125px;vertical-align: middle;}
-        #results .result span.host-name {width:250px;} 
-        #results .result span.icon {width:30px;} 
+        #results .result span.host-name {width:250px;}
+        #results .result span.icon {width:30px;}
     #results .virtual {vertical-align: middle;}
     #results .physical {font-size:24px;}
 
     #results .result .details ul {padding: 20px 0;}
     #results .result .details ul li {display:inline-block; width:45%;line-height:24px; padding:0 0 0 15px;text-align:left;}
-    #results .result .details ul li strong {display:inline-block; width:100px;}
+    #results .result .details ul li strong {display:inline-block; width:110px;}
     #results .result .details .website {vertical-align:top;padding:10px 10px 10px 0;border-top: 1px solid lightgray;}
     #results .result .details .website ul {display: inline-block;width: 50%;}
     #results .result .details .website li {display:inherit;float:left;width:100%;line-height:24px;text-align:left;}
