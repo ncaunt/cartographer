@@ -3,9 +3,9 @@ function createMapper() {
         var source = hit._source;
         var websiteCount = '0 websites ';
         if(source.software && source.software.websites) {
-            websiteCount = Array.isArray(source.software.websites) ? source.software.websites.length + ' websites ' : '1 website '; 
+            websiteCount = Array.isArray(source.software.websites) ? source.software.websites.length + ' websites ' : '1 website ';
         }
-        var type = source.physicalOrVirtual.toLowerCase().startsWith("virtual") ? 
+        var type = source.physicalOrVirtual.toLowerCase().startsWith("virtual") ?
             '<img src="/static/images/vm.png" height="100%" width="24px" class="virtual"/>' :
             '<i class="fa fa-server physical"></i>';
 
@@ -27,6 +27,7 @@ function createMapper() {
             numberOfProcessors: processors,
             model: source.model,
             serialNumber: source.serialNumber,
+            environment: source.environment,
             websites: mapWebsites(source.software)
         }
     }

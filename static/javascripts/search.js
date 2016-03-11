@@ -43,7 +43,7 @@ window.onload = function(){
 
     function runSearch(text) {
         resultsBox.html('<span id="searching">Searching now</span>');
-        esInterface.query(text)
+        return esInterface.query(text)
             .then(renderResultList)
             .catch(function (err) {
                 resultsBox.html('<div id="error">' + 
