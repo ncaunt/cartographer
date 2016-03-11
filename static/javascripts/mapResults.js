@@ -27,7 +27,7 @@ function createMapper() {
             numberOfProcessors: processors,
             model: source.model,
             serialNumber: source.serialNumber,
-            environment: source.environment,
+            environment: source.systemStatus,
             websites: mapWebsites(source.software)
         }
     }
