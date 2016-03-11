@@ -1,6 +1,6 @@
 function createMapper() {
-    function mapBaseResults(hit) {
-        var source = hit._source;
+    function mapBaseResults(serverResults, poolResults) {
+        var source = serverResults._source;
         var websiteCount = '0 websites ';
         if(source.software && source.software.websites) {
             websiteCount = Array.isArray(source.software.websites) ? source.software.websites.length + ' websites ' : '1 website ';
@@ -16,7 +16,7 @@ function createMapper() {
 
         var websites = mapWebsites(source.software)
 
-        return {
+        var mappedResult = {
             hostName: source.hostName,
             ipAddress: source.primaryIPAddress,
             websiteCount: websiteCount,
@@ -30,6 +30,10 @@ function createMapper() {
             environment: source.systemStatus,
             websites: mapWebsites(source.software)
         }
+        if(poolResults) {
+            mappedResult.poolName = poolResults._id;
+        }
+        return mappedResult;
     }
 
     function getIcon(platform) {
