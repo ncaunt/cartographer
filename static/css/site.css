@@ -27,6 +27,7 @@ ul {padding: 0;}
 
     #results .result .details ul {padding: 20px 0;}
     #results .result .details ul li {display:inline-block; width:45%;line-height:24px; padding:0 0 0 15px;text-align:left;}
+        #results .result .details ul li.more-details {padding-top:15px;}
     #results .result .details ul li strong {display:inline-block; width:110px;}
     #results .result .details .website {vertical-align:top;padding:10px 10px 10px 0;border-top: 1px solid lightgray;}
     #results .result .details .website ul {display: inline-block;width: 50%;}
