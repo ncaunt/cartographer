@@ -19,7 +19,7 @@
                 <li><strong>Model:</strong>{{model}}</li>
                 <li><strong>Service Tag:</strong>{{serialNumber}}</li>
                 <li><strong>Environment:</strong>{{#environment}}{{environment}}{{/environment}}{{^environment}}Unknown{{/environment}}</li>
-                <li><strong>Pool Name:</strong>{{poolName}}{{poolName}}{{/poolName}}{{^poolName}}Unknown{{/poolName}}</li>
+                <li><strong>Pool Name:</strong>{{#poolName}}{{poolName}}{{/poolName}}{{^poolName}}Unknown{{/poolName}}</li>
             </ul>
             <strong>Websites: </strong>
             {{#websites}}
