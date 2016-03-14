@@ -29,7 +29,7 @@ function createMapper() {
             serialNumber: source.serialNumber,
             environment: source.systemStatus,
             websites: mapWebsites(source.software),
-            poolName: source.poolName
+            pools: source.pools.join(', ')
         }
 
         return mappedResult;

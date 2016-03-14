@@ -9,13 +9,27 @@ function createElasticsearchInterface(){
                     if(!serverResults.hits.hits[0]) {
                         return resolve(serverResults);
                     }
+
+                    if (serverResults.hits.hits[0]._source.software && serverResults.hits.hits[0]._source.software.websites.length) {
+                        var ports = _.map(serverResults.hits.hits[0]._source.software.websites, function (website) {
+                            var b = _.map(website.bindings, function (binding) {
+                                var m;
+                                if (m = binding.match(/:(\d+)/)) {
+                                    return m[1];
+                                }
+                            });
+                            return _.uniq(_.compact(b));
+                        });
+                    }
+
                     return $.ajax({
                         url: 'http://logs.laterooms.com:9200/loadbalancer/pools/_search?q=basic.nodes_table.node:"' + serverResults.hits.hits[0]._source.primaryIPAddress + ':*"'
                     })
                     .success(function (poolResults){
-                        if(poolResults.hits.hits[0]){
-                            serverResults.hits.hits[0]._source.poolName = poolResults.hits.hits[0]._id;
-                        }
+                        var pools = _.uniq(_.map(poolResults.hits.hits, function (pool) {
+                            return pool._id;
+                        }));
+                        serverResults.hits.hits[0]._source.pools = pools;
                         resolve(serverResults);
                     })
                 })
