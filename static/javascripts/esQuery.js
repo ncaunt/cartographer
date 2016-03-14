@@ -10,7 +10,8 @@ function createElasticsearchInterface(){
                         url: 'http://logs.laterooms.com:9200/loadbalancer/pools/_search?q=basic.nodes_table.node:"' + serverResults.hits.hits[0]._source.primaryIPAddress + ':*"'
                     })
                     .success(function (poolResults){
-                        resolve(serverResults, poolResults);
+                        serverResults.hits.hits[0]._source.poolName = poolResults.hits.hits[0]._id;
+                        resolve(serverResults);
                     })
                 })
                 .error(reject);

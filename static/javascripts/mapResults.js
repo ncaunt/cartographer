@@ -1,5 +1,5 @@
 function createMapper() {
-    function mapBaseResults(serverResults, poolResults) {
+    function mapBaseResults(serverResults) {
         var source = serverResults._source;
         var websiteCount = '0 websites ';
         if(source.software && source.software.websites) {
@@ -28,11 +28,10 @@ function createMapper() {
             model: source.model,
             serialNumber: source.serialNumber,
             environment: source.systemStatus,
-            websites: mapWebsites(source.software)
+            websites: mapWebsites(source.software),
+            poolName: source.poolName
         }
-        if(poolResults) {
-            mappedResult.poolName = poolResults._id;
-        }
+
         return mappedResult;
     }
 
