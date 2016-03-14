@@ -15,12 +15,15 @@ window.onload = function(){
                 $('#search-button').click()
             }
         });
-        resultsBox.on('click', '.result', showAdditionalInfo);
+        resultsBox.on('click', '.basic-info', showAdditionalInfo);
     }
     bindSearchEvents();
 
     function showAdditionalInfo(e){
         $('.details', $(e.target).closest('.result')).toggleClass('hidden');
+        $('.detail-icon', $(e.target).closest('.result')).each(function toggle(i, item){
+            $(item).toggleClass('hidden');
+        })
     }
 
     function searchFromQuerystring(){
@@ -28,7 +31,7 @@ window.onload = function(){
         if(query){
             $(searchBox).val(query);
             return runSearch(query);
-        }    
+        }
     }
     searchFromQuerystring();
 
@@ -46,7 +49,7 @@ window.onload = function(){
         return esInterface.query(text)
             .then(renderResultList)
             .catch(function (err) {
-                resultsBox.html('<div id="error">' + 
+                resultsBox.html('<div id="error">' +
                     '<span class="message">Encountered an error ' + err.message + '</span>' +
                     '<span class="stack">' + err.stack + '</span>' +
                 '</div>');

@@ -1,11 +1,15 @@
 {{#results}}
     <li class="result">
-        <span class="icon">{{{platformIcon}}}</span>
-        <span class="host-name">
-            <strong>{{hostName}}</strong>
-        </span>
-        <span class="ip">({{ipAddress}})</span>
-        <span class="website-count">{{websiteCount}}</span>
+        <div class="basic-info">
+            <span class="detail-icon"><i class="fa fa-angle-right"></i></span>
+            <span class="detail-icon hidden"><i class="fa fa-angle-down"></i></span>
+            <span class="icon">{{{platformIcon}}}</span>
+            <span class="host-name">
+                <strong>{{hostName}}</strong>
+            </span>
+            <span class="ip">({{ipAddress}})</span>
+            <span class="website-count">{{websiteCount}}</span>
+        </div>
         <div class="hidden details">
             <ul>
                 <li><strong>Platform:</strong>{{platform}}</li>
@@ -14,14 +18,7 @@
                 <li><strong>Total Cores:</strong>{{numberOfProcessors}}</li>
                 <li><strong>Model:</strong>{{model}}</li>
                 <li><strong>Service Tag:</strong>{{serialNumber}}</li>
-                    <li><strong>Environment:</strong>
-                        {{#environment}}
-                            {{environment}}
-                        {{/environment}}
-                        {{^environment}}
-                            Unknown
-                        {{/environment}}
-                    </li>
+                <li><strong>Environment:</strong>{{#environment}}{{environment}}{{/environment}}{{^environment}}Unknown{{/environment}}</li>
             </ul>
             <strong>Websites: </strong>
             {{#websites}}

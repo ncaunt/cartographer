@@ -14,11 +14,14 @@ ul {padding: 0;}
     #results #header li {display:inline-block; width:24%;text-align: center;}
     #results #header li.name {text-align: left;}
 
-    #results .result {margin:0; padding:15px; border-bottom:1px solid lightgray;list-style: none;}
-    #results .result:hover {background-color:#FEFEFF;cursor: pointer;}
+    #results .result {margin:0; border-bottom:1px solid lightgray;list-style: none;}
+    #results .result .basic-info {padding:15px; }
+    #results .result .basic-info:hover {background-color:#FEFEFF;cursor: pointer;}
     #results .result span {display: inline-block;width:125px;vertical-align: middle;}
         #results .result span.host-name {width:250px;}
         #results .result span.icon {width:30px;}
+        #results .result span.detail-icon {width:30px;}
+            #results .result span.detail-icon.hidden {display: none;}
     #results .virtual {vertical-align: middle;}
     #results .physical {font-size:24px;}
 
@@ -28,7 +31,7 @@ ul {padding: 0;}
     #results .result .details .website {vertical-align:top;padding:10px 10px 10px 0;border-top: 1px solid lightgray;}
     #results .result .details .website ul {display: inline-block;width: 50%;}
     #results .result .details .website li {display:inherit;float:left;width:100%;line-height:24px;text-align:left;}
-    #results .result .details .website li strong {float:left; width:100px;}
+    #results .result .details .website li strong {float:left; width:120px;}
     #results .result .details .bindings {display:inline-block; vertical-align:top;width: 40%;margin-top:10px;}
     #results .result .details .bindings ul {display:inline-block; width:100%;padding-left:50px;}
     #results .result .details .bindings li {display:inherit;width:100%;padding-left:0;text-align:left;line-height:24px;}
