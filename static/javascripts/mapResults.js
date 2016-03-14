@@ -14,7 +14,7 @@ function createMapper() {
         var memory = source.physicalOrAllocatedMemory + (source.physicalOrAllocatedMemory > 300 ? 'MB' : 'GB');
         var processors = source.numberOfProcessors || 'Unknown';
 
-        var websites = mapWebsites(source.software)
+        var websites = mapWebsites(source.software);
 
         return {
             hostName: source.hostName,
@@ -74,9 +74,21 @@ function createMapper() {
         }
     }
 
+    function groupResults(results) {
+        return _.groupBy(results, '_source.systemStatus');
+    }
+
     return {
         map: function (results) {
-            return {results: _.map(results, mapBaseResults)}
+            var groups = groupResults(results);
+            var mappedResults = {groups:[]};
+            _.forEach(groups, function(groupedResults, groupKey) {
+                mappedResults.groups.push({
+                    name: groupKey,
+                    groupedResults:_.map(groupedResults, mapBaseResults)
+                });
+            });
+            return mappedResults;
         }
     }
 }

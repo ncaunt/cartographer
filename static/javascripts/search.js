@@ -47,7 +47,11 @@ window.onload = function(){
     function runSearch(text) {
         resultsBox.html('<span id="searching">Searching now</span>');
         return esInterface.query(text)
-            .then(renderResultList)
+            .then(renderer.render)
+            .then(function (renderedView) {
+                resultsBox.html(renderedView);
+            })
+            // .then(resultsBox.html)
             .catch(function (err) {
                 resultsBox.html('<div id="error">' +
                     '<span class="message">Encountered an error ' + err.message + '</span>' +
@@ -57,10 +61,8 @@ window.onload = function(){
     }
 
     function renderResultList(results){
-        renderer.render(results)
-            .then(function (renderedView) {
-                resultsBox.html(renderedView);
-            });
+
+            ;
     }
 
     function getParameterByName(name, url) {
