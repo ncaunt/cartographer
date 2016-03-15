@@ -1,4 +1,4 @@
-function createMapper() {
+function createResultsMapper() {
     function mapBaseResults(hit) {
         var source = hit._source;
         var websiteCount = '0 websites ';
@@ -79,8 +79,8 @@ function createMapper() {
 
     return {
         map: function (results) {
-            var groups = groupResults(results);
             var mappedResults = {groups:[]};
+            var groups = groupResults(results);
             _.forEach(groups, function(groupedResults, groupKey) {
                 mappedResults.groups.push({
                     name: groupKey,

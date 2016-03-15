@@ -1,10 +1,12 @@
 window.onload = function(){
 
-    var resultsMapper = createMapper();
+    var resultsMapper = createResultsMapper();
+    var filterMapper = createFilterMapper();
     var fileLoader = createFileLoader();
-    var renderer = createRenderer(resultsMapper, fileLoader);
+    var renderer = createRenderer(resultsMapper, filterMapper, fileLoader);
     var esInterface = createElasticsearchInterface();
     var resultsBox = $('#results');
+    var filters = $('#filters');
     var searchBox = $('#search-box');
 
     function bindSearchEvents(){
@@ -39,6 +41,7 @@ window.onload = function(){
         var text = searchBox[0].value;
         if(text === "") {
             resultsBox.html('');
+            filters.html('');
             return;
         }
         runSearch(text);
@@ -48,8 +51,9 @@ window.onload = function(){
         resultsBox.html('<span id="searching">Searching now</span>');
         return esInterface.query(text)
             .then(renderer.render)
-            .then(function (renderedView) {
-                resultsBox.html(renderedView);
+            .then(function (renders) {
+                resultsBox.html(renders.results);
+                filters.html(renders.filters);
             })
             // .then(resultsBox.html)
             .catch(function (err) {
