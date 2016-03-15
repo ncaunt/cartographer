@@ -18,6 +18,7 @@ window.onload = function(){
             }
         });
         resultsBox.on('click', '.basic-info', showAdditionalInfo);
+        filters.on('click', 'li', filterResults);
     }
     bindSearchEvents();
 
@@ -26,6 +27,12 @@ window.onload = function(){
         $('.detail-icon', $(e.target).closest('.result')).each(function toggle(i, item){
             $(item).toggleClass('hidden');
         })
+    }
+
+    function filterResults(e){
+        var li = $(e.target).closest('li');
+        $(li).toggleClass('selected');
+        $('i', $(li)).toggleClass('hidden');
     }
 
     function searchFromQuerystring(){
@@ -62,11 +69,6 @@ window.onload = function(){
                     '<span class="stack">' + err.stack + '</span>' +
                 '</div>');
             });
-    }
-
-    function renderResultList(results){
-
-            ;
     }
 
     function getParameterByName(name, url) {

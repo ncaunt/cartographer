@@ -14,7 +14,7 @@ function createFileLoader(){
                         $.get(item, function(data){
                             callback(null, data);
                         })
-                        .fail(function (data){
+                        .fail(function (data) {
                             callback(new Error(data.responseText));
                         })
                     }, function (err, results) {
