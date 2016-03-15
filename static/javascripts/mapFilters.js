@@ -4,7 +4,11 @@ function createFilterMapper(){
         map: function (hits) {
             if(!hits) return {};
 
-            return _.groupBy(hits, '_source.systemStatus');
+            return {
+                filters: _.map(_.groupBy(hits, '_source.systemStatus'), function(hit, key) {
+                    return {filter: key};
+                })
+            };
         }
     }
 }
