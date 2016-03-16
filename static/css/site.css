@@ -17,8 +17,8 @@ ul {padding: 0;}
     #results .result {margin:0; border-bottom:1px solid lightgray;list-style: none;}
     #results .result .basic-info {padding:15px; }
     #results .result .basic-info:hover {background-color:#FEFEFF;cursor: pointer;}
-    #results .result span {display: inline-block;width:125px;vertical-align: middle;}
-        #results .result span.host-name {width:250px;}
+    #results .result span {display: inline-block;width:10em;vertical-align: middle;}
+        #results .result span.host-name {width:20em;}
         #results .result span.icon {width:30px;}
         #results .result span.detail-icon {width:30px;}
             #results .result span.detail-icon.hidden {display: none;}
