@@ -95,6 +95,7 @@ function createResultsMapper(filterMapper) {
             }
             return {
                 name: filterName,
+                count: group.length,
                 results: group
             };
         });
@@ -111,6 +112,7 @@ function createResultsMapper(filterMapper) {
                 group.results = _.map(group.results, mapBaseResults)
                 mappedResults.groups.push(group);
                 mappedResults.filters.push({
+                    count: group.results.length,
                     filter: group.name
                 });
             });
