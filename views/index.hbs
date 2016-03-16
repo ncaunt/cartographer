@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css"/>
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.5.1/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/async/1.5.2/async.min.js"></script>
     <script type="text/javascript" src="/static/javascripts/lib/mustache.js"></script>
     <script src="/static/javascripts/mapResults.js"></script>
     <script src="/static/javascripts/fileLoader.js"></script>
     <script src="/static/javascripts/esQuery.js"></script>
     <script src="/static/javascripts/renderer.js"></script>
+    <script src="/static/javascripts/filtering.js"></script>
     <script src="/static/javascripts/search.js"></script>
 </head>
 <body>
@@ -21,8 +23,9 @@
             <input type="search" id="search-box" placeholder="Search for server name or ip" ></input>
             <button id="search-button">Search</button>
         </div>
-        <ul id="results">
-        </ul>
+        <div id="filters"></div>
+        <div id="results">
+        </div>
     </div>
 </div>
 
