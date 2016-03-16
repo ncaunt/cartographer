@@ -1,4 +1,10 @@
 function createElasticsearchInterface(){
+    function ajax(options) {
+        return new Promise(function (resolve, reject) {
+            $.ajax(options).done(resolve).fail(reject);
+        });
+    }
+
     function quote(str) {
         return ['"', str, '"'].join('');
     }
@@ -6,10 +12,10 @@ function createElasticsearchInterface(){
     return {
         query: function (query) {
             return new Promise(function(resolve, reject) {
-                $.ajax({
+                ajax({
                     url:'http://logs.laterooms.com:9200/servers/_search?size=100&q=' + query
                 })
-                .success(function (serverResults) {
+                .then(function (serverResults) {
                     if(!serverResults.hits.hits[0]) {
                         return resolve(serverResults);
                     }
@@ -26,10 +32,9 @@ function createElasticsearchInterface(){
                         });
                     }
 
-                    return $.ajax({
+                    return ajax({
                         url: 'http://logs.laterooms.com:9200/loadbalancer/pools/_search?q=basic.nodes_table.node:"' + serverResults.hits.hits[0]._source.primaryIPAddress + ':*"'
-                    })
-                    .success(function (poolResults){
+                    }).then(function (poolResults) {
                         var pools = _.uniq(_.map(poolResults.hits.hits, function (pool) {
                             var env = pool._source.environment;
                             var m = pool._id.match(new RegExp(env + '_(.+)'));
@@ -38,20 +43,19 @@ function createElasticsearchInterface(){
 
                         serverResults.hits.hits[0]._source.pools = pools;
                         if (!pools.length) {
-                            resolve(serverResults);
+                            return resolve(serverResults);
                         }
 
                         var vserversQuery = 'http://logs.laterooms.com:9200/loadbalancer/vservers/_search?q=basic.pool:(' + _.map(pools, quote).join(' ') + ')';
 
-                        return $.ajax({
+                        return ajax({
                             url: vserversQuery
-                        }).success(function (vserverResults) {
+                        }).then(function (vserverResults) {
                             serverResults.hits.hits[0]._source.vservers = vserverResults;
                             resolve(serverResults);
                         });
                     })
                 })
-                .error(reject);
             });
         }
     }
