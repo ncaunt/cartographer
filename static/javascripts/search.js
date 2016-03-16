@@ -1,34 +1,43 @@
-window.onload = function(){
+window.onload = function () {
 
-    var resultsMapper = createMapper();
+    var resultsMapper = createResultsMapper();
     var fileLoader = createFileLoader();
     var renderer = createRenderer(resultsMapper, fileLoader);
     var esInterface = createElasticsearchInterface();
     var resultsBox = $('#results');
+    var filters = $('#filters');
     var searchBox = $('#search-box');
 
-    function bindSearchEvents(){
+    function bindSearchEvents() {
         $('#search-button').click(searchFromBox);
-        $(searchBox).keypress(function(event){
+        $(searchBox).keypress(function (event) {
             var keycode = (event.keyCode ? event.keyCode : event.which);
-            if(keycode == '13'){
+            if (keycode == '13') {
                 $('#search-button').click()
             }
         });
         resultsBox.on('click', '.basic-info', showAdditionalInfo);
+        filters.on('click', 'li', filterResults);
     }
     bindSearchEvents();
 
-    function showAdditionalInfo(e){
+    function showAdditionalInfo(e) {
         $('.details', $(e.target).closest('.result')).toggleClass('hidden');
-        $('.detail-icon', $(e.target).closest('.result')).each(function toggle(i, item){
+        $('.detail-icon', $(e.target).closest('.result')).each(function toggle(i, item) {
             $(item).toggleClass('hidden');
         })
     }
 
-    function searchFromQuerystring(){
+    function filterResults(e) {
+        var li = $(e.target).closest('li');
+        $(li).toggleClass('selected');
+        $('i', $(li)).toggleClass('hidden');
+        filter();
+    }
+
+    function searchFromQuerystring() {
         var query = getParameterByName('q');
-        if(query){
+        if (query) {
             $(searchBox).val(query);
             return runSearch(query);
         }
@@ -37,8 +46,9 @@ window.onload = function(){
 
     function searchFromBox() {
         var text = searchBox[0].value;
-        if(text === "") {
+        if (text === "") {
             resultsBox.html('');
+            filters.html('');
             return;
         }
         runSearch(text);
@@ -47,19 +57,17 @@ window.onload = function(){
     function runSearch(text) {
         resultsBox.html('<span id="searching">Searching now</span>');
         return esInterface.query(text)
-            .then(renderResultList)
+            .then(renderer.render)
+            .then(function (renders) {
+                resultsBox.html(renders.results);
+                filters.html(renders.filters);
+            })
+            // .then(resultsBox.html)
             .catch(function (err) {
                 resultsBox.html('<div id="error">' +
                     '<span class="message">Encountered an error ' + err.message + '</span>' +
                     '<span class="stack">' + err.stack + '</span>' +
-                '</div>');
-            });
-    }
-
-    function renderResultList(results){
-        renderer.render(results)
-            .then(function (renderedView) {
-                resultsBox.html(renderedView);
+                    '</div>');
             });
     }
 

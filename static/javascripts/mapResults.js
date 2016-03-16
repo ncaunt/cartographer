@@ -1,8 +1,9 @@
-function createMapper() {
-    function mapBaseResults(serverResults) {
-        var source = serverResults._source;
+
+function createResultsMapper(filterMapper) {
+    function mapBaseResults(hit) {
+        var source = hit._source;
         var websiteCount = '0 websites ';
-        if(source.software && source.software.websites) {
+        if (source.software && source.software.websites) {
             websiteCount = Array.isArray(source.software.websites) ? source.software.websites.length + ' websites ' : '1 website ';
         }
         var type = source.physicalOrVirtual.toLowerCase().startsWith("virtual") ?
@@ -14,7 +15,7 @@ function createMapper() {
         var memory = source.physicalOrAllocatedMemory + (source.physicalOrAllocatedMemory > 300 ? 'MB' : 'GB');
         var processors = source.numberOfProcessors || 'Unknown';
 
-        var websites = mapWebsites(source.software)
+        var websites = mapWebsites(source.software);
 
         var mappedResult = {
             hostName: source.hostName,
@@ -38,7 +39,7 @@ function createMapper() {
     function getIcon(platform) {
         var windows = new RegExp(".*windows.*");
         var linux = new RegExp(".*linux.*");
-        if(windows.test(platform)) {
+        if (windows.test(platform)) {
             return '<i class="fa fa-windows"></i>';
         } else if (linux.test(platform)) {
             return '<i class="fa fa-linux"></i>';
@@ -47,10 +48,10 @@ function createMapper() {
     }
 
     function mapWebsites(software) {
-        if(!software) {
+        if (!software) {
             return [];
         }
-        if(Array.isArray(software.websites)) {
+        if (Array.isArray(software.websites)) {
             return _.map(software.websites, function (website) {
                 return {
                     name: website.name,
@@ -65,21 +66,62 @@ function createMapper() {
     }
 
     function mapBindings(bindings) {
-        if(!bindings){
+        if (!bindings) {
             return mapBindings(['No bindings found']);
         }
-        if(Array.isArray(bindings)){
+        if (Array.isArray(bindings)) {
             return _.map(bindings, function (binding) {
-                return {binding:binding};
+                return {
+                    binding: binding
+                };
             });
         } else {
             return mapBindings([bindings]);
         }
     }
 
+    function groupResults(results) {
+        return
+    }
+
+    const renameRules = [{
+        target: 'na',
+        replace: 'Other'
+    }]
+
+    function groupIntoFilters(results) {
+        var groupedResults = _.groupBy(results, '_source.systemStatus');
+        return _.map(groupedResults, function (group, filterName) {
+            var renameRule = _.find(renameRules, function (problem) {
+                return problem.target === filterName;
+            });
+            if (renameRule) {
+                filterName = renameRule.replace
+            }
+            return {
+                name: filterName,
+                count: group.length,
+                results: group
+            };
+        });
+    }
+
     return {
         map: function (results) {
-            return {results: _.map(results, mapBaseResults)}
+            var mappedResults = {
+                groups: [],
+                filters: []
+            }
+            var groupedResults = groupIntoFilters(results);
+            _.map(groupedResults, function (group) {
+                group.results = _.map(group.results, mapBaseResults)
+                mappedResults.groups.push(group);
+                mappedResults.filters.push({
+                    count: group.results.length,
+                    filter: group.name
+                });
+            });
+            return mappedResults;
         }
     }
 }
