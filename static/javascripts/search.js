@@ -1,19 +1,18 @@
-window.onload = function(){
+window.onload = function () {
 
     var resultsMapper = createResultsMapper();
-    var filterMapper = createFilterMapper();
     var fileLoader = createFileLoader();
-    var renderer = createRenderer(resultsMapper, filterMapper, fileLoader);
+    var renderer = createRenderer(resultsMapper, fileLoader);
     var esInterface = createElasticsearchInterface();
     var resultsBox = $('#results');
     var filters = $('#filters');
     var searchBox = $('#search-box');
 
-    function bindSearchEvents(){
+    function bindSearchEvents() {
         $('#search-button').click(searchFromBox);
-        $(searchBox).keypress(function(event){
+        $(searchBox).keypress(function (event) {
             var keycode = (event.keyCode ? event.keyCode : event.which);
-            if(keycode == '13'){
+            if (keycode == '13') {
                 $('#search-button').click()
             }
         });
@@ -22,22 +21,22 @@ window.onload = function(){
     }
     bindSearchEvents();
 
-    function showAdditionalInfo(e){
+    function showAdditionalInfo(e) {
         $('.details', $(e.target).closest('.result')).toggleClass('hidden');
-        $('.detail-icon', $(e.target).closest('.result')).each(function toggle(i, item){
+        $('.detail-icon', $(e.target).closest('.result')).each(function toggle(i, item) {
             $(item).toggleClass('hidden');
         })
     }
 
-    function filterResults(e){
+    function filterResults(e) {
         var li = $(e.target).closest('li');
         $(li).toggleClass('selected');
         $('i', $(li)).toggleClass('hidden');
     }
 
-    function searchFromQuerystring(){
+    function searchFromQuerystring() {
         var query = getParameterByName('q');
-        if(query){
+        if (query) {
             $(searchBox).val(query);
             return runSearch(query);
         }
@@ -46,7 +45,7 @@ window.onload = function(){
 
     function searchFromBox() {
         var text = searchBox[0].value;
-        if(text === "") {
+        if (text === "") {
             resultsBox.html('');
             filters.html('');
             return;
@@ -67,7 +66,7 @@ window.onload = function(){
                 resultsBox.html('<div id="error">' +
                     '<span class="message">Encountered an error ' + err.message + '</span>' +
                     '<span class="stack">' + err.stack + '</span>' +
-                '</div>');
+                    '</div>');
             });
     }
 

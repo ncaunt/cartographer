@@ -1,8 +1,8 @@
-function createResultsMapper() {
+function createResultsMapper(filterMapper) {
     function mapBaseResults(hit) {
         var source = hit._source;
         var websiteCount = '0 websites ';
-        if(source.software && source.software.websites) {
+        if (source.software && source.software.websites) {
             websiteCount = Array.isArray(source.software.websites) ? source.software.websites.length + ' websites ' : '1 website ';
         }
         var type = source.physicalOrVirtual.toLowerCase().startsWith("virtual") ?
@@ -34,7 +34,7 @@ function createResultsMapper() {
     function getIcon(platform) {
         var windows = new RegExp(".*windows.*");
         var linux = new RegExp(".*linux.*");
-        if(windows.test(platform)) {
+        if (windows.test(platform)) {
             return '<i class="fa fa-windows"></i>';
         } else if (linux.test(platform)) {
             return '<i class="fa fa-linux"></i>';
@@ -43,10 +43,10 @@ function createResultsMapper() {
     }
 
     function mapWebsites(software) {
-        if(!software) {
+        if (!software) {
             return [];
         }
-        if(Array.isArray(software.websites)) {
+        if (Array.isArray(software.websites)) {
             return _.map(software.websites, function (website) {
                 return {
                     name: website.name,
@@ -61,12 +61,14 @@ function createResultsMapper() {
     }
 
     function mapBindings(bindings) {
-        if(!bindings){
+        if (!bindings) {
             return mapBindings(['No bindings found']);
         }
-        if(Array.isArray(bindings)){
+        if (Array.isArray(bindings)) {
             return _.map(bindings, function (binding) {
-                return {binding:binding};
+                return {
+                    binding: binding
+                };
             });
         } else {
             return mapBindings([bindings]);
@@ -74,17 +76,46 @@ function createResultsMapper() {
     }
 
     function groupResults(results) {
-        return _.groupBy(results, '_source.systemStatus');
+        return
+    }
+
+    const renameRules = [{
+        target: 'na',
+        replace: 'Other'
+    }]
+
+    function groupIntoFilters(results) {
+        var groupedResults = _.groupBy(results, '_source.systemStatus');
+        var allFilters = Object.keys(groupedResults);
+        return _.map(groupedResults, function (group, filterName) {
+            var results = group[filterName];
+            var renameRule = _.find(renameRules, function (problem) {
+                return problem.target === filterName;
+            });
+            if (renameRule) {
+                filterName = renameRule.replace
+            }
+            return {
+                name: filterName,
+                results: group
+            };
+        });
     }
 
     return {
         map: function (results) {
-            var mappedResults = {groups:[]};
-            var groups = groupResults(results);
-            _.forEach(groups, function(groupedResults, groupKey) {
+            var mappedResults = {
+                groups: [],
+                filters: []
+            }
+            var groupedResults = groupIntoFilters(results);
+            _.map(groupedResults, function (group) {
                 mappedResults.groups.push({
-                    name: groupKey,
-                    groupedResults:_.map(groupedResults, mapBaseResults)
+                    name: group.name,
+                    results: _.map(group.results, mapBaseResults)
+                });
+                mappedResults.filters.push({
+                    filter: group.name
                 });
             });
             return mappedResults;
