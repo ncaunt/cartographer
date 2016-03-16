@@ -1,4 +1,8 @@
 function createElasticsearchInterface(){
+    function quote(str) {
+        return ['"', str, '"'].join('');
+    }
+
     return {
         query: function (query) {
             return new Promise(function(resolve, reject) {
@@ -29,7 +33,7 @@ function createElasticsearchInterface(){
                         var pools = _.uniq(_.map(poolResults.hits.hits, function (pool) {
                             var env = pool._source.environment;
                             var m = pool._id.match(new RegExp(env + '_(.+)'));
-                            return m.length ? '"'+m[1]+'"' : undefined;
+                            return m.length ? m[1] : undefined;
                         }));
 
                         serverResults.hits.hits[0]._source.pools = pools;
@@ -37,7 +41,7 @@ function createElasticsearchInterface(){
                             resolve(serverResults);
                         }
 
-                        var vserversQuery = 'http://logs.laterooms.com:9200/loadbalancer/vservers/_search?q=basic.pool:(' + pools.join(' ') + ')';
+                        var vserversQuery = 'http://logs.laterooms.com:9200/loadbalancer/vservers/_search?q=basic.pool:(' + _.map(pools, quote).join(' ') + ')';
 
                         return $.ajax({
                             url: vserversQuery
