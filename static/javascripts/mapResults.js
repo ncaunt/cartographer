@@ -16,6 +16,7 @@ function createResultsMapper(filterMapper) {
         var processors = source.numberOfProcessors || 'Unknown';
 
         var websites = mapWebsites(source.software);
+        var pools = mapPools(source.pools);
 
         var mappedResult = {
             hostName: source.hostName,
@@ -29,8 +30,8 @@ function createResultsMapper(filterMapper) {
             model: source.model,
             serialNumber: source.serialNumber,
             environment: source.systemStatus,
-            websites: mapWebsites(source.software),
-            pools: source.pools.join(', ')
+            websites: websites,
+            pools: pools
         }
 
         return mappedResult;
@@ -45,6 +46,12 @@ function createResultsMapper(filterMapper) {
             return '<i class="fa fa-linux"></i>';
         }
         return '<i class="fa fa-question"></i>';
+    }
+
+    function mapPools(pools) {
+        if (!Array.isArray(pools) || !pools.length)
+            return '';
+        return pools.join(', ');
     }
 
     function mapWebsites(software) {

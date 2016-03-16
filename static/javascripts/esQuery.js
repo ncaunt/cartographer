@@ -27,10 +27,28 @@ function createElasticsearchInterface(){
                     })
                     .success(function (poolResults){
                         var pools = _.uniq(_.map(poolResults.hits.hits, function (pool) {
-                            return pool._id;
+                            var env = pool._source.environment;
+                            var m = pool._id.match(new RegExp(env + '_(.+)'));
+                            return m.length ? '"'+m[1]+'"' : undefined;
                         }));
+
                         serverResults.hits.hits[0]._source.pools = pools;
-                        resolve(serverResults);
+                        if (!pools.length) {
+                            resolve(serverResults);
+                        }
+
+console.log(pools);
+                        var vserversQuery = 'http://logs.laterooms.com:9200/loadbalancer/vservers/_search?q=basic.pool:(' + pools.join(' ') + ')';
+
+console.log("queryUrl", queryUrl);
+
+                        return $.ajax({
+                            url: vserversQuery
+                        }).success(function (vserverResults) {
+console.log("vserverResults", vserverResults);
+                            serverResuls.hits.hits[0]._source.vservers = vservers;
+                            resolve(serverResults);
+                        });
                     })
                 })
                 .error(reject);
