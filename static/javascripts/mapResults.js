@@ -87,7 +87,6 @@ function createResultsMapper(filterMapper) {
     function groupIntoFilters(results) {
         var groupedResults = _.groupBy(results, '_source.systemStatus');
         return _.map(groupedResults, function (group, filterName) {
-            var results = group[filterName];
             var renameRule = _.find(renameRules, function (problem) {
                 return problem.target === filterName;
             });
