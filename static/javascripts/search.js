@@ -52,7 +52,6 @@ window.onload = function () {
             return;
         }
         runSearch(text);
-        filter.apply();
     }
 
     function runSearch(text) {
@@ -62,6 +61,7 @@ window.onload = function () {
             .then(function (renders) {
                 resultsBox.html(renders.results);
                 filters.html(renders.filters);
+                filter.apply();
             })
             // .then(resultsBox.html)
             .catch(function (err) {
