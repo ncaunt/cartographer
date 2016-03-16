@@ -32,6 +32,7 @@ window.onload = function () {
         var li = $(e.target).closest('li');
         $(li).toggleClass('selected');
         $('i', $(li)).toggleClass('hidden');
+        filter();
     }
 
     function searchFromQuerystring() {
