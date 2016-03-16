@@ -43,11 +43,11 @@ ul {padding: 0;}
 
 
     #filters {font-size: 18px;-webkit-touch-callout: none;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none; }
-    #filters li {display:inline-block;margin:15px 0 0 15px;width:12em;padding:15px;list-style-type: none;border:1px solid black;text-align:left;}
+    #filters li {display:inline-block;margin:15px 0 0 15px;width:15em;padding:15px;list-style-type: none;border:1px solid black;text-align:left;}
         #filters li:hover {cursor: pointer;}
         #filters li.selected {border:1px solid black;background:#72C2D3;}
         #filters li i.hidden {display: none;}
-        #filters li i {width:1.1em;}
+        #filters li i {width:1.25em;}
 
 .hidden {display: none;}
 .cl {clear:both;}
