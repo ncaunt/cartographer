@@ -1,10 +1,9 @@
-function createRenderer(resultsMapper, filterMapper, fileLoader) {
+function createRenderer(resultsMapper, fileLoader) {
 
     return {
         render: function (results) {
 
             var mappedResults = resultsMapper.map(results.hits.hits);
-            // var filters = filterMapper.map(results.hits.hits);
             var renderedResults;
 
             return fileLoader.all(['/static/javascripts/templates/results.html', '/static/javascripts/templates/filters.html'])
