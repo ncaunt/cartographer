@@ -57,6 +57,7 @@ function createResultsMapper(filterMapper) {
     }
 
     function mapVservers(vservers) {
+        if (!vservers) return;
         var servers = _.map(vservers.hits.hits, function (v) {
             return v._id;
         });
