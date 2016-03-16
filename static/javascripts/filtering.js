@@ -40,7 +40,7 @@ function createFilter() {
             }
             $(groups).addClass('hidden');
             groups.each(function (i, group) {
-                if (_.some(appliedFilters, $(group).data().filter)) {
+                if (isApplied($(group).data().filter)) {
                     return $(group).removeClass('hidden');
                 }
             })
