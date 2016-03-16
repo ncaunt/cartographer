@@ -4,6 +4,7 @@ window.onload = function () {
     var fileLoader = createFileLoader();
     var renderer = createRenderer(resultsMapper, fileLoader);
     var esInterface = createElasticsearchInterface();
+    var filter = createFilter();
     var resultsBox = $('#results');
     var filters = $('#filters');
     var searchBox = $('#search-box');
@@ -29,10 +30,9 @@ window.onload = function () {
     }
 
     function filterResults(e) {
-        var li = $(e.target).closest('li');
-        $(li).toggleClass('selected');
-        $('i', $(li)).toggleClass('hidden');
-        filter();
+        var li = $(e.target).closest('li')[0];
+        filter.toggle(li);
+        filter.apply();
     }
 
     function searchFromQuerystring() {
@@ -52,6 +52,7 @@ window.onload = function () {
             return;
         }
         runSearch(text);
+        filter.apply();
     }
 
     function runSearch(text) {
