@@ -37,16 +37,12 @@ function createElasticsearchInterface(){
                             resolve(serverResults);
                         }
 
-console.log(pools);
                         var vserversQuery = 'http://logs.laterooms.com:9200/loadbalancer/vservers/_search?q=basic.pool:(' + pools.join(' ') + ')';
-
-console.log("queryUrl", queryUrl);
 
                         return $.ajax({
                             url: vserversQuery
                         }).success(function (vserverResults) {
-console.log("vserverResults", vserverResults);
-                            serverResuls.hits.hits[0]._source.vservers = vservers;
+                            serverResults.hits.hits[0]._source.vservers = vserverResults;
                             resolve(serverResults);
                         });
                     })

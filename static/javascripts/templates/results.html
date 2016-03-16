@@ -22,7 +22,8 @@
                             <li><strong>Total Cores:</strong>{{numberOfProcessors}}</li>
                             <li><strong>Model:</strong>{{model}}</li>
                             <li><strong>Service Tag:</strong>{{serialNumber}}</li>
-                            <li><strong>Pool Name:</strong>{{#poolName}}{{poolName}}{{/poolName}}{{^poolName}}Unknown{{/poolName}}</li>
+                            <li><strong>Pools:</strong>{{#pools}}{{pools}}{{/pools}}{{^pools}}Unknown{{/pools}}</li>
+                            <li><strong>Virtual Servers:</strong>{{#vservers}}{{vservers}}{{/vservers}}{{^vservers}}Unknown{{/vservers}}</li>
                         </ul>
                         <strong>Websites: </strong>
                         {{#websites}}

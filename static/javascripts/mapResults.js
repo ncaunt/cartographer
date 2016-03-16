@@ -17,6 +17,7 @@ function createResultsMapper(filterMapper) {
 
         var websites = mapWebsites(source.software);
         var pools = mapPools(source.pools);
+        var vservers = mapVservers(source.vservers);
 
         var mappedResult = {
             hostName: source.hostName,
@@ -31,7 +32,8 @@ function createResultsMapper(filterMapper) {
             serialNumber: source.serialNumber,
             environment: source.systemStatus,
             websites: websites,
-            pools: pools
+            pools: pools,
+            vservers: vservers
         }
 
         return mappedResult;
@@ -52,6 +54,13 @@ function createResultsMapper(filterMapper) {
         if (!Array.isArray(pools) || !pools.length)
             return '';
         return pools.join(', ');
+    }
+
+    function mapVservers(vservers) {
+        var servers = _.map(vservers.hits.hits, function (v) {
+            return v._id;
+        });
+        return servers;
     }
 
     function mapWebsites(software) {
