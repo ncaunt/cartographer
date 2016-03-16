@@ -86,7 +86,6 @@ function createResultsMapper(filterMapper) {
 
     function groupIntoFilters(results) {
         var groupedResults = _.groupBy(results, '_source.systemStatus');
-        var allFilters = Object.keys(groupedResults);
         return _.map(groupedResults, function (group, filterName) {
             var results = group[filterName];
             var renameRule = _.find(renameRules, function (problem) {
@@ -110,10 +109,8 @@ function createResultsMapper(filterMapper) {
             }
             var groupedResults = groupIntoFilters(results);
             _.map(groupedResults, function (group) {
-                mappedResults.groups.push({
-                    name: group.name,
-                    results: _.map(group.results, mapBaseResults)
-                });
+                group.results = _.map(group.results, mapBaseResults)
+                mappedResults.groups.push(group);
                 mappedResults.filters.push({
                     filter: group.name
                 });
