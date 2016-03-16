@@ -1,3 +1,4 @@
+
 function createResultsMapper(filterMapper) {
     function mapBaseResults(hit) {
         var source = hit._source;
@@ -16,7 +17,7 @@ function createResultsMapper(filterMapper) {
 
         var websites = mapWebsites(source.software);
 
-        return {
+        var mappedResult = {
             hostName: source.hostName,
             ipAddress: source.primaryIPAddress,
             websiteCount: websiteCount,
@@ -27,8 +28,12 @@ function createResultsMapper(filterMapper) {
             numberOfProcessors: processors,
             model: source.model,
             serialNumber: source.serialNumber,
-            websites: mapWebsites(source.software)
+            environment: source.systemStatus,
+            websites: mapWebsites(source.software),
+            poolName: source.poolName
         }
+
+        return mappedResult;
     }
 
     function getIcon(platform) {
